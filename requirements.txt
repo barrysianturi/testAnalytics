@@ -1,0 +1,9 @@
+pandas
+girth
+irt
+seaborn
+theano-pymc
+pymc3
+arviz
+seaborn
+matplotlib
