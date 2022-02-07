@@ -67,13 +67,13 @@ with pm.Model() as model:
         return v1 + v2
 
     ll = pm.DensityDist('ll', logp, observed = {'d': data.transpose()})
-    trace = pm.sample(1000, cores=-1, step = pm.NUTS())
+    trace = pm.sample(2000, cores=-1, step = pm.NUTS(),return_inferencedata=False)
     trace = trace[250:]
 
     xr.set_options(display_style="text")
     rng = np.random.default_rng()
 
-    fig, axes = plt.subplots(ncols=2,nrows=27,figsize=(16,16))
+    fig, axes = plt.subplots(ncols=2,nrows=len(df)+1,figsize=(16,16))
     az.rcParams["plot.max_subplots"] = 200
     az.plot_trace(trace, var_names="Person",kind="trace",plot_kwargs={'lw':2},
                   chain_prop={"ls":"-"},combined=True,compact=False,
@@ -83,7 +83,7 @@ with pm.Model() as model:
     plt.xlim([-5,5])
     fig.savefig('./results/distPerson.pdf')
 
-    fig, axes = plt.subplots(ncols=2,nrows=50,figsize=(16,16))
+    fig, axes = plt.subplots(ncols=2,nrows=len(data)+1,figsize=(16,16))
     ax = az.plot_trace(trace, var_names="Question", chain_prop={"ls":"-"},plot_kwargs={'lw':2,'textsize':7},combined=True,compact=False,
                 axes=axes,fill_kwargs={"color":"orange",'alpha': 0.8})
     plt.xlim([-5,10])
